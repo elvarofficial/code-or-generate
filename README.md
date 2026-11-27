@@ -1,11 +1,13 @@
+![Claude Code x Tripo API: game assets, code it or generate it](docs/banner.png)
+
 # Code it or generate it? 25 game assets, both ways
 
-The same 25 game assets, made twice from the same concept images and measured the same way. The brief started with six; the client asked for twenty, then for a fifth, harder tier of 5 statues. The first six kept their ids (01 to 06). `assets.json` holds the display order, simple to hard, in 5 tiers of 5.
+The same 25 game assets, made twice from the same concept images and measured the same way, simple to hard in 5 tiers of 5. The test started with six assets and grew to 25; the first six kept their ids (01 to 06), and `assets.json` holds the display order.
 
 - **Code**: Claude Opus 5.5 writes each asset as a three.js module (`route-a/`).
 - **Tripo API**: `tripo.js` sends the same three views to the [Tripo API](https://developers.tripo3d.ai/?invite=CKBGEQ5JCM), multiview to model (`route-b/`).
 
-Live page: switch every asset between Code and Tripo API → `index.html`.
+Live page: https://code-or-generate.vercel.app, one switch flips every asset between Code and Tripo API (source: `index.html`, `site/`).
 Numbers: [`results.csv`](results.csv), 25 assets × 2 routes.
 
 ## Rules
@@ -29,7 +31,7 @@ route-b/             one .glb per asset, the rigged and animated golem, tasks.js
 measure/             side-by-side images, aligned renders, silhouette overlays, results.json
 clips/               the golem walk clips, the turntable reel, the live page recordings
 results.csv          the 50 rows
-approval/            the tier 5 concept board made for the client before the build
+approval/            the tier 5 concept board, drawn up before the build
 ```
 
 ## How each step ran
@@ -46,10 +48,10 @@ Credits are converted at the published API price, 1 credit = $0.01 ([developers.
 **Measuring.** `measure.js` loads each model into three.js in headless Chromium, scales it to height 1, centers it, and renders front, left and back with the same orthographic camera on white. Silhouettes: every material is swapped to black, the background is everything white connected to the border (so glass and enclosed gaps count as the object), on both the render and the reference. The render mask is scaled to the reference's height and centered on it, then IoU = overlap / union. Triangles are counted from the index buffers (instances included).
 IoU is strict on thin shapes: a branch that is a few pixels off counts as a miss on both sides. The tree scores 0.46 on both routes for that reason.
 
-**Route B setup.** Route B needs a script. A fresh Claude Code session wrote `tripo.js` from the brief's step 2 and step 4 prompts, with no API key and no API calls, in 3.2 minutes for $0.64 (`route-b/setup-session/`). That is a one-time cost for all 25. The `tripo.js` in the repo root is the script that made the runs.
+**Route B setup.** Route B needs a script. A fresh Claude Code session wrote `tripo.js` from two written prompts (`route-b/setup-session/PROMPT.txt`), with no API key and no API calls, in 3.2 minutes for $0.64 (`route-b/setup-session/`). That is a one-time cost for all 25. The `tripo.js` in the repo root is the script that made the runs.
 
 **Walk test.** Tripo: `walk_tripo.js`, three calls (rig-check, rig `v3.0-20260909` biped glb, retarget `preset:idle` + `preset:walk`, retargeted in place so it stays on the turntable). Code: one more fresh session adds idle and walk in code to `route-a/06-golem.js`, at most 3 fix rounds. `walk_clip.js` renders 5 s of each from the same side-on camera.
-After the brief, the wolf and the dragon got the same walk test for the live page: `animate_tripo.js full 05-wolf 20-dragon` (rig-check reports quadruped, rig, retarget `preset:quadruped:walk`) and one fresh session each (`05-wolf-walk`, `20-dragon-walk`) with the golem's instruction. The page shows both standing, from their measured builds. rig-check found the tree, the slime and all 5 statues not riggable (logged in `tasks.json`); the page sways the tree and squashes the slime the same way on both routes. Every extended module keeps its measured build as `<asset>.step3.js`, which `measure.js` and the studio renders use.
+After the main test, the wolf and the dragon got the same walk test for the live page: `animate_tripo.js full 05-wolf 20-dragon` (rig-check reports quadruped, rig, retarget `preset:quadruped:walk`) and one fresh session each (`05-wolf-walk`, `20-dragon-walk`) with the golem's instruction. The page shows both standing, from their measured builds. rig-check found the tree, the slime and all 5 statues not riggable (logged in `tasks.json`); the page sways the tree and squashes the slime the same way on both routes. Every extended module keeps its measured build as `<asset>.step3.js`, which `measure.js` and the studio renders use.
 
 ## The fourteen added assets
 
@@ -62,7 +64,7 @@ After the brief, the wolf and the dragon got the same walk test for the live pag
 
 ## Tier 5, the statues
 
-- 5 collectible statues added last: alchemist, dwarf blacksmith, mounted knight, goblin and troll, dragon's hoard. The concept sheets went on one board for the client before the build (`approval/tier5-board.png`).
+- 5 collectible statues added last: alchemist, dwarf blacksmith, mounted knight, goblin and troll, dragon's hoard. Their 5 concept sheets went on one board before the build (`approval/tier5-board.png`).
 - The first knight sheet drew all 3 views at three quarters and the first goblin sheet put its views out of order, so both prompts spell out each view (`prompts/step1_sheet_23-knight.txt`, `24-goblin`) and were drawn again. The goblin's side view faces image-right, so its `left.png` is mirrored like the lantern, the wolf, the shield and the slime.
 - Every statue sheet looks down at the statue from slightly above, so each round base shows as a tall ellipse; `measure.js` renders dead level. All 5 code sessions noted it, and the 3 fix rounds fitted their outlines to the sheet, bases included. Code took 4 of the 5 on silhouette; the side-by-sides in `measure/side-by-side/21-*` to `25-*` show the detail IoU does not read.
 - Same model, same prompt, same note, Claude Code 2.1.331. Tripo: 5 tasks, 409 s, 550 credits, no retries.
