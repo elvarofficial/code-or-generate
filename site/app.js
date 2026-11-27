@@ -620,7 +620,7 @@ function updateLabels() {
 
 function fmtRow(row, route) {
   if (!row) return `<dt>status</dt><dd>not measured</dd>`;
-  const cost = route === "code" ? `$${(+row.llm_cost_usd).toFixed(2)}` : `${row.tripo_credits} cr`;
+  const cost = route === "code" ? `$${(+row.llm_cost_usd).toFixed(2)}` : `$${(row.tripo_credits / 100).toFixed(2)} · ${row.tripo_credits} cr`;
   return [
     ["time", `${(+row.minutes).toFixed(1)} min`],
     ["cost", cost],

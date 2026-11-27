@@ -47,7 +47,7 @@ async function render(page, opts) {
 const codeFile = (a) => (fs.existsSync(`route-a/${a}.step3.js`) ? `route-a/${a}.step3.js` : `route-a/${a}.js`);
 const label = (x, name, color, r, tripo) =>
   `<div class="l" style="left:${x}px"><b>${name}</b><i style="background:${color}"></i>` +
-  (r ? `<em>match ${mean(r)}</em><small>${(+r.triangles).toLocaleString("en-US")} tris · ${(+r.minutes).toFixed(1)} min · ${tripo ? `${r.tripo_credits} credits` : `$${(+r.llm_cost_usd).toFixed(2)}`}</small>` : "") +
+  (r ? `<em>match ${mean(r)}</em><small>${(+r.triangles).toLocaleString("en-US")} tris · ${(+r.minutes).toFixed(1)} min · ${tripo ? `$${(r.tripo_credits / 100).toFixed(2)} (${r.tripo_credits} credits)` : `$${(+r.llm_cost_usd).toFixed(2)}`}</small>` : "") +
   `</div>`;
 
 // section 1 hero

@@ -70,7 +70,7 @@
   <div class="rulegrid">
     <div class="rr"><i style="background:var(--code)"></i><b>If you can build it from boxes, cylinders and spheres, code it.</b><span>Code won the crate, the pillar, the barrel and the potion, and kept all 25 assets under 20,000 triangles.</span></div>
     <div class="rr"><i style="background:var(--tripo)"></i><b>If it has a face, a blade, an ornament or a twist, generate it.</b><span>Tripo API won 12 of the 25, in 57 to 119 seconds each, and kept every face on the 5 statues.</span></div>
-    <div class="rr"><i style="background:var(--tripo)"></i><b>If it has to move, generate it and rig it.</b><span>3 API calls, 37 seconds, 45 credits.</span></div>
+    <div class="rr"><i style="background:var(--tripo)"></i><b>If it has to move, generate it and rig it.</b><span>3 API calls, 37 seconds, $0.45 (45 credits).</span></div>
   </div>
 </section>
 
@@ -89,7 +89,7 @@
     { <span class="k">"back"</span>:  <span class="s">"file_ed36fcec-…"</span> }
   ]
 <span class="p">}</span></pre>
-  <div class="foot">asset 1, the crate · tripo.js prints this body before sending it · task 84f20a6b, 113 s, 110 credits</div>
+  <div class="foot">asset 1, the crate · tripo.js prints this body before sending it · task 84f20a6b, 113 s, 110 credits ($1.10)</div>
 </section>
 
 <section class="card" id="sheets">
@@ -103,21 +103,21 @@
   <div class="kicker">Results · assets 01 to 10</div>
   <h1>results.csv</h1>
   <table id="full" class="full"></table>
-  <div class="foot">match = mean IoU of the silhouettes against the concept views · Code attempts = 1 build + fix rounds · Code cost = tokens at list price · Tripo API: credits, $0.01 each</div>
+  <div class="foot">match = mean IoU of the silhouettes against the concept views · Code attempts = 1 build + fix rounds · Code cost = tokens at list price · Tripo API cost = credits at $0.01 each, 110 a generation</div>
 </section>
 
 <section class="card" id="table2">
   <div class="kicker">Results · assets 11 to 20</div>
   <h1>results.csv</h1>
   <table id="full2" class="full"></table>
-  <div class="foot">match = mean IoU of the silhouettes against the concept views · Code attempts = 1 build + fix rounds · Code cost = tokens at list price · Tripo API: credits, $0.01 each</div>
+  <div class="foot">match = mean IoU of the silhouettes against the concept views · Code attempts = 1 build + fix rounds · Code cost = tokens at list price · Tripo API cost = credits at $0.01 each, 110 a generation</div>
 </section>
 
 <section class="card" id="table3">
   <div class="kicker">Results · tier 5, assets 21 to 25</div>
   <h1>results.csv</h1>
   <table id="full3" class="full"></table>
-  <div class="foot">match = mean IoU of the silhouettes against the concept views · Code attempts = 1 build + fix rounds · Code cost = tokens at list price · Tripo API: credits, $0.01 each</div>
+  <div class="foot">match = mean IoU of the silhouettes against the concept views · Code attempts = 1 build + fix rounds · Code cost = tokens at list price · Tripo API cost = credits at $0.01 each, 110 a generation</div>
 </section>
 
 <style>
@@ -223,7 +223,7 @@
       const i = from + k, c = get(a, "Code"), r = get(a, "Tripo API");
       const better = mean(c) > mean(r) ? "Code" : "Tripo API";
       for (const [kk, xx] of [["Code", c], ["Tripo API", r]]) {
-        const cost = kk === "Code" ? `$${(+xx.llm_cost_usd).toFixed(2)}` : `${xx.tripo_credits} cr`;
+        const cost = kk === "Code" ? `$${(+xx.llm_cost_usd).toFixed(2)}` : `$${(xx.tripo_credits / 100).toFixed(2)}`;
         const first = kk === "Code";
         ft += `<tr class="${first ? "pair" : "second"}"><td>${first ? `<span class="n">${num(i)}</span>${NAMES[a]}` : ""}</td>` +
           `<td class="r"><i style="background:${kk === "Code" ? "var(--code)" : "var(--tripo)"}"></i>${kk}</td>` +

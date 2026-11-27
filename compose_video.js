@@ -51,7 +51,7 @@ if (mode === "walk") {
   await overlay(page,
     `<div class="k">making it walk · same side-on camera</div><div class="t">Golem boss</div>` +
     label(xs(meta)[0], "Code", "#c97f1e", `coded joints · ${notes.minutes.toFixed(1)} min · $${notes.llm_cost_usd.toFixed(2)}`) +
-    label(xs(meta)[1], "Tripo API", "#4499e0", `3 API calls · ${sec} s · ${cr} credits`),
+    label(xs(meta)[1], "Tripo API", "#4499e0", `3 API calls · ${sec} s · $${(cr / 100).toFixed(2)} (${cr} credits)`),
     "renders/blender/overlays/walk.png");
   execFileSync(FFMPEG, ["-y", "-loglevel", "error", "-framerate", "30", "-i", "renders/blender/walk/%04d.png", "-i", "renders/blender/overlays/walk.png",
     "-filter_complex", "[0:v][1:v]overlay=0:0,format=yuv420p", "-c:v", "libx264", "-crf", "16", "-movflags", "+faststart", "clips/06-golem-walk-blender.mp4"]);
@@ -69,7 +69,7 @@ if (mode === "reel") {
     await overlay(page,
       `<div class="k">${POS[asset]} / ${LIST.length} · ${tests}</div><div class="t">${name}</div>` +
       label(xs(meta)[0], "Code", "#c97f1e", `match ${mean(c)} · ${(+c.minutes).toFixed(1)} min · $${(+c.llm_cost_usd).toFixed(2)}`) +
-      label(xs(meta)[1], "Tripo API", "#4499e0", `match ${mean(t)} · ${(+t.minutes).toFixed(1)} min · ${t.tripo_credits} credits`),
+      label(xs(meta)[1], "Tripo API", "#4499e0", `match ${mean(t)} · ${(+t.minutes).toFixed(1)} min · $${(t.tripo_credits / 100).toFixed(2)} (${t.tripo_credits} credits)`),
       ov);
     const seg = `renders/blender/overlays/seg-${asset}.mp4`;
     execFileSync(FFMPEG, ["-y", "-loglevel", "error", "-framerate", "30", "-i", `${dir}/%04d.png`, "-i", ov,
