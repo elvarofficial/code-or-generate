@@ -1,0 +1,14 @@
+import { chromium } from 'file:///D:/elvar/cog-runs/node_modules/playwright/index.mjs';
+import fs from 'fs'; import path from 'path';
+const ROOT='D:/elvar/cog-runs', SP=process.argv[3], tag=process.argv[2];
+const b=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+const p=await b.newPage();
+p.on('console',m=>console.log('console:',m.text())); p.on('pageerror',e=>console.log('err:',e.message));
+await p.route('http://x.test/**',r=>{const u=new URL(r.request().url()).pathname;
+ const f=u==='/render.html'?path.join(SP,'render.html'):path.join(ROOT,decodeURIComponent(u));
+ if(!fs.existsSync(f))return r.fulfill({status:404});
+ r.fulfill({body:fs.readFileSync(f),contentType:{'.js':'text/javascript','.html':'text/html','.png':'image/png'}[path.extname(f)]||'application/octet-stream'});});
+await p.goto('http://x.test/render.html');
+await p.waitForFunction(()=>window.__out,null,{timeout:60000});
+const o=await p.evaluate(()=>window.__out); console.log('triangles',o.tris);
+fs.writeFileSync(path.join(SP,tag+'.png'),Buffer.from(o.png.split(',')[1],'base64')); await b.close();

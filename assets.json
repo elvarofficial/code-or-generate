@@ -1,0 +1,127 @@
+[
+ {
+  "id": "01-crate",
+  "name": "Crate",
+  "tests": "Boxes and straight edges"
+ },
+ {
+  "id": "07-chest",
+  "name": "Treasure chest",
+  "tests": "Boxes and one curved lid"
+ },
+ {
+  "id": "08-pillar",
+  "name": "Stone pillar",
+  "tests": "Stacked blocks"
+ },
+ {
+  "id": "09-signpost",
+  "name": "Signpost",
+  "tests": "Thin planks at angles"
+ },
+ {
+  "id": "10-barrel",
+  "name": "Barrel",
+  "tests": "A curved body with bands"
+ },
+ {
+  "id": "02-lantern",
+  "name": "Oil lantern",
+  "tests": "Simple curves, thin parts"
+ },
+ {
+  "id": "11-potion",
+  "name": "Potion",
+  "tests": "Glass and a round body"
+ },
+ {
+  "id": "12-shield",
+  "name": "Round shield",
+  "tests": "A flat disc with a painted face"
+ },
+ {
+  "id": "03-sword",
+  "name": "Sword",
+  "tests": "Long thin shape, small ornament"
+ },
+ {
+  "id": "13-axe",
+  "name": "Battle axe",
+  "tests": "Thin blades, a wrapped grip"
+ },
+ {
+  "id": "14-hammer",
+  "name": "War hammer",
+  "tests": "A heavy head on a thin handle"
+ },
+ {
+  "id": "15-staff",
+  "name": "Magic staff",
+  "tests": "A long shaft, roots and a crystal"
+ },
+ {
+  "id": "16-crystals",
+  "name": "Crystals",
+  "tests": "Facets and sharp angles"
+ },
+ {
+  "id": "17-boulder",
+  "name": "Mossy boulder",
+  "tests": "An organic lump with cracks"
+ },
+ {
+  "id": "18-mushrooms",
+  "name": "Mushrooms",
+  "tests": "Soft organic shapes"
+ },
+ {
+  "id": "04-tree",
+  "name": "Twisted tree",
+  "tests": "Organic branching"
+ },
+ {
+  "id": "19-slime",
+  "name": "Slime",
+  "tests": "A soft blob with a face"
+ },
+ {
+  "id": "05-wolf",
+  "name": "Wolf",
+  "tests": "Face, fur, legs"
+ },
+ {
+  "id": "20-dragon",
+  "name": "Dragon",
+  "tests": "Wings, a tail, four legs"
+ },
+ {
+  "id": "06-golem",
+  "name": "Golem boss",
+  "tests": "A boss that walks"
+ },
+ {
+  "id": "21-alchemist",
+  "name": "Alchemist",
+  "tests": "A figure, a dragon, a sphere, two tables of props"
+ },
+ {
+  "id": "22-blacksmith",
+  "name": "Dwarf blacksmith",
+  "tests": "A figure inside a forge scene"
+ },
+ {
+  "id": "23-knight",
+  "name": "Mounted knight",
+  "tests": "A rider on a rearing horse"
+ },
+ {
+  "id": "24-goblin",
+  "name": "Goblin and troll",
+  "tests": "Two characters stacked, with cargo"
+ },
+ {
+  "id": "25-dragonhoard",
+  "name": "Dragon's hoard",
+  "tests": "A creature on a pile of coins"
+ }
+]

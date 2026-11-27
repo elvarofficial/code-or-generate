@@ -1,0 +1,8 @@
+A game asset turnaround sheet on a plain white background.
+Asset: a goblin shaman with a feathered staff riding on the shoulders of a big hunched troll, the troll carrying sacks, pots and a lantern, bone amulets and furs, all on an ornate round base, a collectible statue.
+Style: stylized fantasy, hand-painted, soft even lighting, no shadows on the background.
+Show exactly three views in one row, same size, same height, orthographic, no perspective:
+1. front view, the troll and the goblin face the camera;
+2. left side view, a pure profile, the troll faces the left edge of the image;
+3. back view, seen straight from behind.
+Nothing else in the image. No text.

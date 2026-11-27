@@ -1,0 +1,24 @@
+<!doctype html><html><body style="margin:0">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import make from '/16-crystals/route-a/16-crystals.js';
+const S=1024/447, W=512;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true}); r.setSize(W,W); r.setClearColor(0xffffff);
+const scene=new THREE.Scene(); const g=make(); scene.add(g);
+scene.add(new THREE.HemisphereLight(0xffffff,0x606060,1.6));
+const d=new THREE.DirectionalLight(0xffffff,1.6); d.position.set(1,3,2); scene.add(d);
+let tris=0; g.traverse(o=>{if(o.isMesh){const gg=o.geometry; tris+=(gg.index?gg.index.count:gg.attributes.position.count)/3;}});
+const cam=new THREE.OrthographicCamera(-S/2,S/2,960/447,-64/447,0.1,50);
+const views={front:[0,0,10],left:[10,0,0],back:[0,0,-10]};
+const out={tris};
+for(const [k,p] of Object.entries(views)){
+  cam.position.set(...p); cam.lookAt(0,0,0); d.position.set(p[0]*0.3+1,3,p[2]*0.3+ (k==='left'?1:0)); r.render(scene,cam);
+  const img=new Image(); img.src='/16-crystals/assets/16-crystals/'+k+'.png'; await img.decode();
+  const c=document.createElement('canvas'); c.width=W*2; c.height=W; const x=c.getContext('2d');
+  x.drawImage(img,0,0,W,W); x.drawImage(r.domElement,W,0);
+  x.font='20px sans-serif'; x.fillStyle='#000'; x.fillText(k+' ref',8,24); x.fillText(k+' render',W+8,24);
+  out[k]=c.toDataURL();
+}
+window.__out=out;
+</script></body></html>

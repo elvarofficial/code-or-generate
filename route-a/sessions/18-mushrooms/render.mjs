@@ -1,0 +1,20 @@
+import { chromium } from 'file:///D:/elvar/cog-runs/node_modules/playwright/index.mjs';
+import fs from 'fs'; import path from 'path';
+const ROOT = 'D:/elvar/cog-runs', SP = process.argv[3];
+const tag = process.argv[2] || 'r1';
+const types = { '.js': 'text/javascript', '.html': 'text/html', '.png': 'image/png' };
+const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+const p = await b.newPage();
+p.on('console', m => console.log('console:', m.text())); p.on('pageerror', e => console.log('err:', e.message));
+await p.route('http://x.test/**', r => {
+  const u = new URL(r.request().url()).pathname;
+  const f = u === '/render.html' ? path.join(SP, 'render.html') : path.join(ROOT, decodeURIComponent(u));
+  if (!fs.existsSync(f)) return r.fulfill({ status: 404 });
+  r.fulfill({ body: fs.readFileSync(f), contentType: types[path.extname(f)] || 'application/octet-stream' });
+});
+await p.goto('http://x.test/render.html');
+await p.waitForFunction(() => window.__out, null, { timeout: 60000 });
+const out = await p.evaluate(() => window.__out);
+console.log('triangles', out.tris);
+for (const v of ['front', 'left', 'back', 'comp']) fs.writeFileSync(path.join(SP, `${tag}-${v}.png`), Buffer.from(out[v].split(',')[1], 'base64'));
+await b.close();

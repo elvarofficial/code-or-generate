@@ -1,0 +1,33 @@
+<!doctype html><html><body style="margin:0;background:#fff">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { createShield } from '/12-shield/route-a/12-shield.js';
+const S = 512;
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(S, S); renderer.setClearColor(0xffffff, 1);
+renderer.toneMapping = THREE.NoToneMapping;
+const scene = new THREE.Scene();
+const obj = createShield(); scene.add(obj);
+let tris = 0; obj.traverse(o => { if (o.isMesh) { const g = o.geometry; tris += (g.index ? g.index.count : g.attributes.position.count) / 3; } });
+scene.add(new THREE.HemisphereLight(0xffffff, 0x888888, 1.6));
+const dl = new THREE.DirectionalLight(0xffffff, 1.6); scene.add(dl); scene.add(dl.target);
+const h = 0.5 * 1024 / 880;
+const cam = new THREE.OrthographicCamera(-h, h, h, -h, 0.01, 10);
+const views = { front: [0, 0.5, 3], left: [3, 0.5, 0], back: [0, 0.5, -3] };
+const out = { tris };
+for (const [name, p] of Object.entries(views)) {
+  cam.position.set(...p); cam.lookAt(0, 0.5, 0);
+  dl.position.set(p[0] + (p[2] ? -1 : 0), 2.5, p[2] + (p[0] ? 1 : 0)); dl.target.position.set(0, 0.5, 0);
+  renderer.render(scene, cam);
+  const img = new Image(); img.src = renderer.domElement.toDataURL();
+  await img.decode();
+  const ref = new Image(); ref.src = `/12-shield/assets/12-shield/${name}.png`; await ref.decode();
+  const c = document.createElement('canvas'); c.width = 2 * S; c.height = S;
+  const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, 2 * S, S);
+  x.drawImage(ref, 0, 0, S, S); x.drawImage(img, S, 0, S, S);
+  x.fillStyle = '#000'; x.font = '16px sans-serif'; x.fillText('reference ' + name, 8, 20); x.fillText('render ' + name, S + 8, 20);
+  out[name] = c.toDataURL('image/png');
+}
+window.__out = out;
+</script></body></html>

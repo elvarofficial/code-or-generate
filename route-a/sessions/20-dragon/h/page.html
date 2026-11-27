@@ -1,0 +1,35 @@
+<!doctype html><html><body style="margin:0;background:#fff">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const mod = await import('/route-a/20-dragon.js?'+Date.now());
+const make = mod.default || Object.values(mod).find(f=>typeof f==='function');
+const g = make();
+let tris=0; g.traverse(o=>{ if(o.isMesh){ const geo=o.geometry; tris += (geo.index?geo.index.count:geo.attributes.position.count)/3; }});
+const box = new THREE.Box3().setFromObject(g);
+const S=1024, W=10.24;
+const r = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true});
+r.setSize(S,S); r.setClearColor(0xffffff,1); document.body.appendChild(r.domElement);
+r.outputColorSpace = THREE.SRGBColorSpace;
+const scene=new THREE.Scene(); scene.add(g);
+scene.add(new THREE.HemisphereLight(0xffffff,0x8a8070,1.6));
+const key=new THREE.DirectionalLight(0xffffff,1.6); scene.add(key); scene.add(key.target);
+// views: [name, camPos dir, center x(horizontal world), image-right axis]
+const cy=3.58;
+const views={front:{pos:[-0.88,cy,50],look:[-0.88,cy,0]}, left:{pos:[50,cy,-0.62],look:[0,cy,-0.62]}, back:{pos:[-1.17,cy,-50],look:[-1.17,cy,0]}};
+const out={tris, box:[box.min.toArray(),box.max.toArray()]};
+for(const [n,v] of Object.entries(views)){
+  const cam=new THREE.OrthographicCamera(-W/2,W/2,W/2,-W/2,0.1,200);
+  cam.position.set(...v.pos); cam.lookAt(...v.look);
+  key.position.set(v.pos[0]+ (n==='back'?-20:20), 40, v.pos[2]); key.target.position.set(...v.look);
+  r.render(scene,cam);
+  const img=new Image(); img.src='/assets/20-dragon/'+n+'.png'; await img.decode();
+  const c=document.createElement('canvas'); c.width=1536; c.height=512; const x=c.getContext('2d');
+  x.fillStyle='#fff'; x.fillRect(0,0,1536,512);
+  x.drawImage(img,0,0,512,512); x.drawImage(r.domElement,512,0,512,512);
+  x.globalAlpha=0.5; x.drawImage(img,1024,0,512,512); x.drawImage(r.domElement,1024,0,512,512); x.globalAlpha=1;
+  out[n]=c.toDataURL('image/png');
+  out[n+'_full']=r.domElement.toDataURL('image/png');
+}
+window.__out=out;
+</script></body></html>

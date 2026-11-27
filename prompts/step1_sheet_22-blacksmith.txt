@@ -1,0 +1,5 @@
+A game asset turnaround sheet on a plain white background.
+Asset: a dwarf blacksmith with a braided red beard and a leather apron hammering a glowing ingot on an anvil, a stone forge with fire and bellows behind him, tongs, hammers and finished swords on a rack, all on an ornate round base, a collectible statue.
+Style: stylized fantasy, hand-painted, soft even lighting, no shadows on the background.
+Show exactly three views in one row, same size, same height: front view, left side view, back view.
+Nothing else in the image. No text.

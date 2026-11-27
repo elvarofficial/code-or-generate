@@ -1,0 +1,15 @@
+<!doctype html><html><body style="margin:0;background:#fff">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const mod = await import(new URLSearchParams(location.search).get('m'));
+const W=360,H=300;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true}); r.setSize(W*3,H); r.setClearColor(0xffffff); document.body.appendChild(r.domElement);
+const sc=new THREE.Scene(); sc.add(new THREE.HemisphereLight(0xffffff,0x888888,1.6)); const dl=new THREE.DirectionalLight(0xffffff,1.6); dl.position.set(2,3,4); sc.add(dl);
+const wolf=mod.createWolf(); sc.add(wolf);
+const cams=[[0,0.6,3.2],[3.2,0.6,0],[0,0.6,-3.2]].map(p=>{const c=new THREE.OrthographicCamera(-0.9,0.9,0.75,-0.75,0.1,10);c.position.set(...p);c.lookAt(0,0.6,0);return c;});
+window.render=()=>{r.setScissorTest(true);cams.forEach((c,i)=>{r.setViewport(i*W,0,W,H);r.setScissor(i*W,0,W,H);r.render(sc,c);});};
+window.wolf=wolf;
+window.pawMinY=()=>{ wolf.updateMatrixWorld(true); const out=[]; for(let i=0;i<4;i++){const m=wolf.getObjectByName('legL'+i+'_fur'); const b=new THREE.Box3().setFromObject(m,true); out.push(+b.min.y.toFixed(3));} return out;};
+window.ready=true;
+</script></body></html>

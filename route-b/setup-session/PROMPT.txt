@@ -1,0 +1,20 @@
+Read the Tripo API docs at https://developers.tripo3d.com/en/docs
+Start with: Quick Start, File Upload, Multiview to 3D Model (P Series), Task Query
+
+Write a Node script tripo.js that:
+1. reads TRIPO_API_KEY from the environment
+2. uploads assets/01-crate/front.png, left.png and back.png
+3. creates one multiview-to-model task with these settings:
+   model "P2-20260801", face_limit 20000, texture true, pbr true, model_seed 42
+4. polls the task every 5 seconds until status is "success" or "failed"
+5. saves the model as route-b/01-crate.glb
+6. appends the full task result JSON to route-b/tasks.json, plus the start and end time
+
+Print the request body before sending it.
+
+Then extend tripo.js so it runs all six folders in assets/ in one go, with the same settings.
+Skip any asset that already has a successful task in route-b/tasks.json.
+If a task fails, retry with model_seed + 1, at most 2 retries. Log every attempt.
+At the end print a table: asset, attempts, seconds waited, credits_consumed, output file.
+
+The API key is not available in this session, so write the script and check it without running it against the API.

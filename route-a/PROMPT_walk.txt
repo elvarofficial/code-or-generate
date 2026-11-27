@@ -1,0 +1,1 @@
+Add an idle and a walk animation to route-a/06-golem.js, in code. At most 3 fix rounds, then stop.

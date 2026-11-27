@@ -1,0 +1,5 @@
+A game asset turnaround sheet on a plain white background.
+Asset: an old alchemist wizard in a hooded blue robe with gold runes and a long white beard, holding a glowing potion flask in one hand and a golden armillary sphere above the other, a green dragon with spread wings rising behind him, two small tables beside him with a cauldron, a skull, candles, books and crystals, all on an ornate round base, a collectible statue.
+Style: stylized fantasy, hand-painted, soft even lighting, no shadows on the background.
+Show exactly three views in one row, same size, same height: front view, left side view, back view.
+Nothing else in the image. No text.

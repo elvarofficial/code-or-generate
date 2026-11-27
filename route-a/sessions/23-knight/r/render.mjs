@@ -1,0 +1,15 @@
+import http from 'http'; import fs from 'fs'; import path from 'path'; import { chromium } from 'file:///D:/elvar/cog-runs/node_modules/playwright/index.mjs';
+const ROOT='D:/elvar/cog-runs', HERE=path.dirname(new URL(import.meta.url).pathname).replace(/^\//,'');
+const types={'.js':'text/javascript','.html':'text/html','.png':'image/png'};
+const srv=http.createServer((q,res)=>{const u=decodeURIComponent(q.url.split('?')[0]);
+ const p=u.startsWith('/scratch/')?path.join(HERE,u.slice(9)):path.join(ROOT,u);
+ fs.readFile(p,(e,d)=>{if(e){res.writeHead(404);res.end();return;}res.writeHead(200,{'Content-Type':types[path.extname(p)]||'application/octet-stream'});res.end(d);});});
+await new Promise(r=>srv.listen(8791,r));
+const b=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+const pg=await b.newPage(); pg.on('console',m=>console.log('console:',m.text())); pg.on('pageerror',e=>console.log('ERR',e.message));
+await pg.goto('http://localhost:8791/scratch/page.html');
+await pg.waitForFunction(()=>window.__out,null,{timeout:90000});
+const out=await pg.evaluate(()=>window.__out);
+const tag=process.argv[2]||'r';
+for(const k of ['front','left','back']) fs.writeFileSync(path.join(HERE,`${tag}-${k}.png`),Buffer.from(out[k].split(',')[1],'base64'));
+console.log('triangles',out.tris); await b.close(); srv.close();

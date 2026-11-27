@@ -1,0 +1,25 @@
+<!doctype html><html><body style="margin:0;background:#fff">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { createSlime } from '/19-slime/route-a/19-slime.js';
+const S=512;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+r.setSize(S,S); r.setClearColor(0xffffff,1); r.outputColorSpace=THREE.SRGBColorSpace;
+const scene=new THREE.Scene(); const obj=createSlime(); scene.add(obj);
+scene.add(new THREE.HemisphereLight(0xffffff,0x99bb99,1.7));
+const d=new THREE.DirectionalLight(0xffffff,1.3); d.position.set(-2,4,3); scene.add(d);
+const d2=new THREE.DirectionalLight(0xffffff,0.6); d2.position.set(2,2,-3); scene.add(d2);
+let tris=0; obj.traverse(o=>{if(o.isMesh){const g=o.geometry;tris+=(g.index?g.index.count:g.attributes.position.count)/3;}});
+const H=1024/710/2, cy=(925-512)/710;
+const cam=new THREE.OrthographicCamera(-H,H,H,-H,0.1,20);
+const views={front:[0,cy,5],left:[5,cy,0],back:[0,cy,-5]};
+const out=document.createElement('canvas'); out.width=S*2; out.height=S*3; const ctx=out.getContext('2d');
+let i=0;
+for(const [v,p] of Object.entries(views)){
+  cam.position.set(...p); cam.lookAt(0,cy,0); r.render(scene,cam);
+  const img=new Image(); img.src='/19-slime/assets/19-slime/'+v+'.png'; await img.decode();
+  ctx.drawImage(img,0,i*S,S,S); ctx.drawImage(r.domElement,S,i*S,S,S); i++;
+}
+window.__out={tris,png:out.toDataURL()};
+</script></body></html>

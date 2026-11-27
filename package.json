@@ -1,0 +1,13 @@
+{
+  "name": "code-or-generate",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "tripo": "node --env-file=.env tripo.js",
+    "measure": "node measure.js"
+  },
+  "dependencies": {
+    "playwright": "1.65.1",
+    "three": "0.186.1"
+  }
+}

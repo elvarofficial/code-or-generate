@@ -1,0 +1,27 @@
+<!doctype html><html><body style="margin:0;background:#fff">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const mod = await import('/13-axe/route-a/13-axe.js?'+Date.now());
+const axe = mod.createAxe();
+let tris=0; axe.traverse(o=>{ if(o.isMesh){ const g=o.geometry; tris += (g.index? g.index.count : g.attributes.position.count)/3; }});
+const N=1024;
+const r = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true});
+r.setSize(N,N); r.setClearColor(0xffffff,1); r.outputColorSpace=THREE.SRGBColorSpace;
+const scene=new THREE.Scene(); scene.add(axe);
+scene.add(new THREE.HemisphereLight(0xffffff,0x8a8070,1.6));
+const views={front:[0,0,5],left:[5,0,0],back:[0,0,-5]};
+const out={tris};
+for(const [name,p] of Object.entries(views)){
+  const cam=new THREE.OrthographicCamera(-0.512,0.512,0.512,-0.512,0.1,20);
+  cam.position.set(p[0],0.418,p[2]); cam.lookAt(0,0.418,0);
+  // camera-attached key light
+  const dl=new THREE.DirectionalLight(0xffffff,2.2); dl.position.set(p[0]+(p[2]?-2:0),3,p[2]+(p[0]?2:0)); scene.add(dl);
+  r.render(scene,cam);
+  const img=await new Promise(res=>{const i=new Image(); i.onload=()=>res(i); i.src='/13-axe/assets/13-axe/'+name+'.png';});
+  const c=document.createElement('canvas'); c.width=2*N; c.height=N; const x=c.getContext('2d');
+  x.fillStyle='#fff'; x.fillRect(0,0,2*N,N); x.drawImage(img,0,0,N,N); x.drawImage(r.domElement,N,0);
+  out[name]=c.toDataURL('image/png'); scene.remove(dl);
+}
+window.__out=out;
+</script></body></html>

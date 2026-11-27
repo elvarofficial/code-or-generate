@@ -1,0 +1,8 @@
+Build this game asset as three.js code, from the three reference images in assets/<NN-name>/ (front.png, left.png, back.png).
+Write it as one module, route-a/<NN-name>.js, that exports a function returning a THREE.Group.
+No external models, no downloaded textures. Geometry and materials in code only.
+Keep it under 20,000 triangles.
+
+When you are done, render it from the front, left and back with an orthographic camera,
+put each render next to the matching reference image, and list what does not match.
+Fix it. Do this compare-and-fix round at most 3 times, then stop.

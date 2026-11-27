@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>bake</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "/node_modules/three/build/three.module.js",
+    "three/addons/": "/node_modules/three/examples/jsm/",
+    "three/examples/": "/node_modules/three/examples/"
+  }
+}
+</script>
+</head>
+<body style="margin:0;background:#fff">
+<script type="module">
+import * as THREE from "three";
+import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
+window.bake = async (seconds, fps) => {
+  const mod = await import("/route-a/06-golem.js");
+  const fn = typeof mod.default === "function" ? mod.default : Object.values(mod).find((v) => typeof v === "function");
+  const root = await fn();
+  root.userData.play("walk");
+  // run into the walk so the idle-to-walk blend is over before sampling
+  for (let i = 0; i < 60; i++) root.userData.update(1 / fps);
+  const nodes = [];
+  root.traverse((o) => { if (!o.isMesh || o.children.length) nodes.push(o); else nodes.push(o); });
+  nodes.forEach((o, i) => { if (!o.name) o.name = "n" + i; });
+  const names = new Set();
+  nodes.forEach((o, i) => { if (names.has(o.name)) o.name = o.name + "_" + i; names.add(o.name); });
+  const n = Math.round(seconds * fps);
+  const times = [], tracks = nodes.map(() => ({ p: [], q: [], s: [] }));
+  for (let f = 0; f <= n; f++) {
+    if (f) root.userData.update(1 / fps);
+    times.push(f / fps);
+    nodes.forEach((o, i) => { tracks[i].p.push(...o.position.toArray()); tracks[i].q.push(...o.quaternion.toArray()); tracks[i].s.push(...o.scale.toArray()); });
+  }
+  const kt = [];
+  const moved = (arr, k) => arr.some((v, j) => Math.abs(v - arr[j % k]) > 1e-6);
+  nodes.forEach((o, i) => {
+    const t = tracks[i];
+    if (moved(t.p, 3)) kt.push(new THREE.VectorKeyframeTrack(o.name + ".position", times, t.p));
+    if (moved(t.q, 4)) kt.push(new THREE.QuaternionKeyframeTrack(o.name + ".quaternion", times, t.q));
+    if (moved(t.s, 3)) kt.push(new THREE.VectorKeyframeTrack(o.name + ".scale", times, t.s));
+  });
+  const clip = new THREE.AnimationClip("walk", seconds, kt);
+  const buf = await new GLTFExporter().parseAsync(root, { binary: true, animations: [clip] });
+  let s = "";
+  const bytes = new Uint8Array(buf);
+  for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return { b64: btoa(s), tracks: kt.length, frames: n + 1 };
+};
+window.ready = true;
+</script>
+</body>
+</html>

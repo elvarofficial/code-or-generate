@@ -1,0 +1,252 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>cards</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #0d0e12; --card: #15161b; --ink: #f1efe9; --ink2: #b4b1a9; --ink3: #7d7a73; --line: rgba(255,255,255,0.08); --code: #c97f1e; --tripo: #4499e0; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #000; font: 500 24px/1.4 Inter, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .card { width: 1600px; padding: 72px 80px 64px; background: radial-gradient(120% 120% at 20% 0%, #1b1c22 0%, var(--bg) 60%); margin-bottom: 40px; position: relative; }
+  .kicker { font: 500 20px "JetBrains Mono", monospace; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink3); }
+  h1 { margin: 14px 0 0; font-size: 58px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; }
+  .sub { margin: 14px 0 0; color: var(--ink2); font-size: 26px; }
+  .legend { display: flex; gap: 34px; margin-top: 34px; font-size: 22px; color: var(--ink2); }
+  .legend span { display: inline-flex; align-items: center; gap: 12px; }
+  .legend i { width: 30px; height: 3px; border-radius: 2px; display: inline-block; }
+  .foot { margin-top: 30px; font: 400 18px "JetBrains Mono", monospace; color: var(--ink3); }
+  svg text { font-family: Inter, sans-serif; }
+  table { width: 100%; border-collapse: collapse; margin-top: 40px; font-size: 24px; }
+  th { text-align: right; font: 500 18px "JetBrains Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); padding: 0 0 18px; }
+  th:first-child, td:first-child { text-align: left; }
+  td { padding: 17px 0; border-top: 1px solid var(--line); text-align: right; font-family: "JetBrains Mono", monospace; font-size: 23px; }
+  td:first-child { font-family: Inter, sans-serif; font-weight: 600; font-size: 25px; }
+  td .n { color: var(--ink3); font: 500 18px "JetBrains Mono", monospace; margin-right: 14px; }
+  tr.total td { border-top: 2px solid rgba(255,255,255,0.18); font-weight: 600; }
+  th.code, th.tripo { position: relative; }
+  th.code::before, th.tripo::before { content: ""; position: absolute; right: 0; top: -14px; width: 26px; height: 3px; border-radius: 2px; }
+  th.code::before { background: var(--code); } th.tripo::before { background: var(--tripo); }
+  .rules { margin: 42px 0 0; padding: 0; list-style: none; counter-reset: r; }
+  .rules li { counter-increment: r; display: grid; grid-template-columns: 70px 1fr; padding: 20px 0; border-top: 1px solid var(--line); font-size: 29px; line-height: 1.35; }
+  .rules li::before { content: counter(r, decimal-leading-zero); font: 500 22px "JetBrains Mono", monospace; color: var(--ink3); padding-top: 6px; }
+</style>
+</head>
+<body>
+
+<section class="card" id="chart">
+  <div class="kicker">Where the line is</div>
+  <h1>Silhouette match, asset by asset</h1>
+  <p class="sub">Mean IoU of the front, left and back silhouettes against the concept sheet. 1.0 is a perfect overlap.</p>
+  <div class="legend"><span><i style="background:var(--code)"></i>Code</span><span><i style="background:var(--tripo)"></i>Tripo API</span></div>
+  <svg id="plot" width="1440" height="640" viewBox="0 0 1440 640"></svg>
+  <div class="foot">results.csv · same camera, same scale, materials swapped to black for the masks</div>
+</section>
+
+<section class="card" id="cost">
+  <div class="kicker">What "free" costs</div>
+  <h1>Minutes and dollars per asset</h1>
+  <p class="sub">Code: one fresh Claude Opus 5.5 session per asset, tokens at list price. Tripo API: credits at $0.01.</p>
+  <table id="costs"></table>
+  <div class="foot">Code minutes = first prompt to final version. Tripo API minutes = wait time from tasks.json; the total adds the exact seconds (2,015&nbsp;s), the rows are rounded.</div>
+</section>
+
+<section class="card" id="rules">
+  <div class="kicker">The rules</div>
+  <h1>Six rules, both routes</h1>
+  <ol class="rules">
+    <li>Both routes start from the same concept images.</li>
+    <li>Route A: the same LLM and the same starting prompt for all 25. One build, then at most 3 fix rounds.</li>
+    <li>Route B: one generation per asset, the same settings for all 25. If a task fails or the result is clearly broken, at most 2 retries with a new seed. Every attempt is logged.</li>
+    <li>Four numbers for every asset on both routes: time, cost, triangle count, silhouette match.</li>
+    <li>LLM tokens count as money. "Free" tools are not free if the LLM ran for 40 minutes.</li>
+    <li>Nothing is left out. If an asset looks bad on one route, it stays in.</li>
+  </ol>
+</section>
+
+<section class="card" id="rule">
+  <div class="kicker">My rule now</div>
+  <h1>Code it or generate it</h1>
+  <div class="rulegrid">
+    <div class="rr"><i style="background:var(--code)"></i><b>If you can build it from boxes, cylinders and spheres, code it.</b><span>Code won the crate, the pillar, the barrel and the potion, and kept all 25 assets under 20,000 triangles.</span></div>
+    <div class="rr"><i style="background:var(--tripo)"></i><b>If it has a face, a blade, an ornament or a twist, generate it.</b><span>Tripo API won 12 of the 25, in 57 to 119 seconds each, and kept every face on the 5 statues.</span></div>
+    <div class="rr"><i style="background:var(--tripo)"></i><b>If it has to move, generate it and rig it.</b><span>3 API calls, 37 seconds, 45 credits.</span></div>
+  </div>
+</section>
+
+<section class="card" id="request">
+  <div class="kicker">The request · same for all 25</div>
+  <h1>POST /v3/generation/multiview-to-model</h1>
+  <pre class="code"><span class="p">{</span>
+  <span class="k">"model"</span>: <span class="s">"P2-20260801"</span>,
+  <span class="k">"face_limit"</span>: <span class="n">20000</span>,
+  <span class="k">"texture"</span>: <span class="n">true</span>,
+  <span class="k">"pbr"</span>: <span class="n">true</span>,
+  <span class="k">"model_seed"</span>: <span class="n">42</span>,
+  <span class="k">"inputs"</span>: [
+    { <span class="k">"front"</span>: <span class="s">"file_3a448a28-…"</span> },
+    { <span class="k">"left"</span>:  <span class="s">"file_134e3b58-…"</span> },
+    { <span class="k">"back"</span>:  <span class="s">"file_ed36fcec-…"</span> }
+  ]
+<span class="p">}</span></pre>
+  <div class="foot">asset 1, the crate · tripo.js prints this body before sending it · task 84f20a6b, 113 s, 110 credits</div>
+</section>
+
+<section class="card" id="sheets">
+  <div class="kicker">25 assets in 5 tiers · stylized fantasy, hand-painted</div>
+  <h1>25 turnaround sheets, simple to hard</h1>
+  <div class="sheetgrid" id="sheetgrid"></div>
+  <div class="foot">one sheet per asset from an image model, cut into front, left and back · both routes got exactly these views</div>
+</section>
+
+<section class="card" id="table">
+  <div class="kicker">Results · assets 01 to 10</div>
+  <h1>results.csv</h1>
+  <table id="full" class="full"></table>
+  <div class="foot">match = mean IoU of the silhouettes against the concept views · Code attempts = 1 build + fix rounds · Code cost = tokens at list price · Tripo API: credits, $0.01 each</div>
+</section>
+
+<section class="card" id="table2">
+  <div class="kicker">Results · assets 11 to 20</div>
+  <h1>results.csv</h1>
+  <table id="full2" class="full"></table>
+  <div class="foot">match = mean IoU of the silhouettes against the concept views · Code attempts = 1 build + fix rounds · Code cost = tokens at list price · Tripo API: credits, $0.01 each</div>
+</section>
+
+<section class="card" id="table3">
+  <div class="kicker">Results · tier 5, assets 21 to 25</div>
+  <h1>results.csv</h1>
+  <table id="full3" class="full"></table>
+  <div class="foot">match = mean IoU of the silhouettes against the concept views · Code attempts = 1 build + fix rounds · Code cost = tokens at list price · Tripo API: credits, $0.01 each</div>
+</section>
+
+<style>
+  .sheetgrid { margin-top: 40px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .sheet { border-radius: 16px; overflow: hidden; background: #fff; position: relative; aspect-ratio: 3168 / 1344; }
+  .sheet img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sheet span { position: absolute; left: 10px; top: 8px; font: 600 14px Inter, sans-serif; color: #2a2a2e; background: rgba(255,255,255,0.85); padding: 4px 12px; border-radius: 999px; }
+  .full { font-size: 21px; }
+  .full th { font-size: 15px; }
+  .full td { font-size: 20px; padding: 13px 0; }
+  .full td:first-child { font-size: 22px; }
+  .full td.r { text-align: left; padding-left: 26px; font-family: Inter, sans-serif; font-weight: 600; font-size: 20px; }
+  .full td.r i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; margin-right: 10px; vertical-align: middle; }
+  .full tr.pair td { border-top: 1px solid rgba(255,255,255,0.16); }
+  .full tr.second td { border-top: 1px dashed rgba(255,255,255,0.06); }
+  .full td.win { color: #fff; font-weight: 600; }
+  .full td.dim { color: #8a877f; }
+  #table h1 { font-family: "JetBrains Mono", monospace; letter-spacing: -0.01em; }
+</style>
+
+<style>
+  .rulegrid { margin-top: 44px; display: grid; gap: 18px; }
+  .rr { display: grid; grid-template-columns: 8px 1fr; column-gap: 28px; row-gap: 6px; padding: 26px 30px; border-radius: 18px; background: rgba(255,255,255,0.03); border: 1px solid var(--line); }
+  .rr i { grid-row: span 2; border-radius: 4px; }
+  .rr b { font-size: 36px; letter-spacing: -0.02em; font-weight: 700; }
+  .rr span { color: var(--ink2); font-size: 23px; }
+  pre.code { margin: 40px 0 0; padding: 36px 40px; border-radius: 18px; background: #0a0b0e; border: 1px solid var(--line); font: 500 27px/1.55 "JetBrains Mono", monospace; color: var(--ink2); }
+  .code .k { color: #9fc9f2; } .code .s { color: #e8b46a; } .code .n { color: #c9a6f2; } .code .p { color: var(--ink3); }
+  #request h1 { font-family: "JetBrains Mono", monospace; font-size: 40px; letter-spacing: -0.01em; }
+</style>
+
+<script>
+(async () => {
+  const LIST = await (await fetch("/assets.json")).json();
+  const assets = LIST.map((a) => a.id);
+  const NAMES = Object.fromEntries(LIST.map((a) => [a.id, a.name]));
+  const text = await (await fetch("/results.csv")).text();
+  const [head, ...lines] = text.trim().split(/\r?\n/);
+  const cols = head.split(",");
+  const rows = lines.map((l) => Object.fromEntries(l.split(",").map((v, i) => [cols[i], v])));
+  const get = (a, r) => rows.find((x) => x.asset === a && x.route === r);
+  const mean = (x) => (+x.iou_front + +x.iou_left + +x.iou_back) / 3;
+  const num = (i) => String(i + 1).padStart(2, "0");
+
+  // ---- line chart, tiers of 5 shaded like the showroom rows
+  const svg = document.getElementById("plot");
+  const L = 90, R = 230, T = 60, B = 190, W = 1440, H = 820, PADX = 30;
+  const x = (i) => L + PADX + (i * (W - L - R - PADX)) / (assets.length - 1);
+  const y = (v) => T + ((1 - v) / (1 - 0.2)) * (H - T - B);
+  let s = "";
+  const TIERS = ["Boxes and planks", "Curves, thin parts", "Shafts, crystals, rocks", "Organic, creatures", "Statues, scenes"];
+  for (let t = 0; t < Math.ceil(assets.length / 5); t++) {
+    const a0 = x(t * 5) - (x(1) - x(0)) / 2, a1 = x(t * 5 + 4) + (x(1) - x(0)) / 2;
+    s += `<rect x="${a0}" y="${T - 40}" width="${a1 - a0}" height="${H - B - T + 40}" fill="rgba(255,255,255,${t % 2 ? 0.025 : 0.0})"/>`;
+    s += `<text x="${(a0 + a1) / 2}" y="${T - 14}" text-anchor="middle" font-size="15" fill="#7d7a73" font-family="JetBrains Mono" letter-spacing="1.5">${TIERS[t].toUpperCase()}</text>`;
+  }
+  for (const v of [0.2, 0.4, 0.6, 0.8, 1.0]) {
+    s += `<line x1="${L}" x2="${W - R + 20}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(255,255,255,${v === 0.2 ? 0.22 : 0.07})" stroke-width="1"/>`;
+    s += `<text x="${L - 18}" y="${y(v) + 7}" text-anchor="end" font-size="20" fill="#7d7a73" font-family="JetBrains Mono">${v.toFixed(1)}</text>`;
+  }
+  assets.forEach((a, i) => {
+    const bx = x(i), by = H - B + 30;
+    s += `<text x="${bx}" y="${by}" text-anchor="middle" font-size="17" fill="#7d7a73" font-family="JetBrains Mono">${num(i)}</text>`;
+    s += `<text transform="translate(${bx + 6},${by + 22}) rotate(-50)" text-anchor="end" font-size="18" fill="#b4b1a9">${NAMES[a]}</text>`;
+  });
+  for (const [route, color] of [["Code", "#c97f1e"], ["Tripo API", "#4499e0"]]) {
+    const pts = assets.map((a, i) => [x(i), y(mean(get(a, route)))]);
+    s += `<polyline points="${pts.map((p) => p.join(",")).join(" ")}" fill="none" stroke="${color}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;
+    pts.forEach(([px, py]) => (s += `<circle cx="${px}" cy="${py}" r="6.5" fill="${color}" stroke="#0d0e12" stroke-width="3"/>`));
+    const last = pts[pts.length - 1], v = mean(get(assets[assets.length - 1], route));
+    s += `<text x="${last[0] + 20}" y="${last[1] + 8}" font-size="22" font-weight="600" fill="#f1efe9">${route} <tspan fill="#b4b1a9" font-weight="500" font-family="JetBrains Mono">${v.toFixed(2)}</tspan></text>`;
+  }
+  svg.setAttribute("height", H);
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  svg.innerHTML = s;
+
+  // ---- cost table
+  const t = document.getElementById("costs");
+  let h = `<tr><th>Asset</th><th class="code">Code min</th><th class="code">Code $</th><th class="tripo">Tripo min</th><th class="tripo">Tripo credits</th><th class="tripo">Tripo $</th></tr>`;
+  const tot = { cm: 0, cu: 0, tm: 0, tc: 0 };
+  assets.forEach((a, i) => {
+    const c = get(a, "Code"), r = get(a, "Tripo API");
+    tot.cm += +c.minutes; tot.cu += +c.llm_cost_usd; tot.tm += +r.minutes; tot.tc += +r.tripo_credits;
+    h += `<tr><td><span class="n">${num(i)}</span>${NAMES[a]}</td><td>${(+c.minutes).toFixed(1)}</td><td>$${(+c.llm_cost_usd).toFixed(2)}</td><td>${(+r.minutes).toFixed(1)}</td><td>${r.tripo_credits}</td><td>$${(r.tripo_credits / 100).toFixed(2)}</td></tr>`;
+  });
+  // the Tripo total comes from the exact seconds in tasks.json, not from the rounded minutes per row
+  const tasks = await (await fetch("/route-b/tasks.json")).json();
+  const waited = tasks.filter((x) => assets.includes(x.asset) && x.task?.type === "multiview_to_model" && x.task?.status === "success")
+    .reduce((s, x) => s + x.seconds_waited, 0);
+  h += `<tr class="total"><td>All ${assets.length}</td><td>${tot.cm.toFixed(1)}</td><td>$${tot.cu.toFixed(2)}</td><td>${(waited / 60).toFixed(1)}</td><td>${tot.tc.toLocaleString("en-US")}</td><td>$${(tot.tc / 100).toFixed(2)}</td></tr>`;
+  t.innerHTML = h;
+
+  // ---- the sheets, 5 across, one tier per row
+  document.getElementById("sheetgrid").innerHTML = assets
+    .map((a, i) => `<div class="sheet"><img src="/sheets/${a}.png"><span>${num(i)} · ${NAMES[a]}</span></div>`)
+    .join("");
+  await Promise.all([...document.querySelectorAll(".sheet img")].map((im) => im.decode().catch(() => {})));
+
+  // ---- full table, cards of 10, 10 and the 5 of tier 5
+  const fill = (id, from, to) => {
+    let ft = `<tr><th>Asset</th><th style="text-align:left;padding-left:26px">Route</th><th>min</th><th>cost</th><th>attempts</th><th>triangles</th><th>front</th><th>left</th><th>back</th><th>match</th></tr>`;
+    assets.slice(from, to).forEach((a, k) => {
+      const i = from + k, c = get(a, "Code"), r = get(a, "Tripo API");
+      const better = mean(c) > mean(r) ? "Code" : "Tripo API";
+      for (const [kk, xx] of [["Code", c], ["Tripo API", r]]) {
+        const cost = kk === "Code" ? `$${(+xx.llm_cost_usd).toFixed(2)}` : `${xx.tripo_credits} cr`;
+        const first = kk === "Code";
+        ft += `<tr class="${first ? "pair" : "second"}"><td>${first ? `<span class="n">${num(i)}</span>${NAMES[a]}` : ""}</td>` +
+          `<td class="r"><i style="background:${kk === "Code" ? "var(--code)" : "var(--tripo)"}"></i>${kk}</td>` +
+          `<td>${(+xx.minutes).toFixed(1)}</td><td>${cost}</td><td>${xx.attempts}</td><td>${(+xx.triangles).toLocaleString("en-US")}</td>` +
+          `<td class="dim">${(+xx.iou_front).toFixed(3)}</td><td class="dim">${(+xx.iou_left).toFixed(3)}</td><td class="dim">${(+xx.iou_back).toFixed(3)}</td>` +
+          `<td class="${better === kk ? "win" : ""}">${mean(xx).toFixed(3)}</td></tr>`;
+      }
+    });
+    document.getElementById(id).innerHTML = ft;
+  };
+  fill("full", 0, 10);
+  fill("full2", 10, 20);
+  fill("full3", 20, 25);
+  window.ready = true;
+})();
+</script>
+</body>
+</html>
+<section id="og" style="width:1200px;height:630px;position:relative;overflow:hidden;background:#0b0c10;font-family:Inter,sans-serif;color:#f1efe9">
+  <img src="/article/hero-06-golem.png" style="position:absolute;left:0;top:-40px;width:1200px;height:675px;object-fit:cover">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,1) 0%,rgba(8,9,12,.96) 12%,rgba(8,9,12,.3) 38%,rgba(8,9,12,0) 60%)"></div>
+  <div style="position:absolute;top:44px;left:56px">
+    <div style="font:500 15px 'JetBrains Mono',monospace;letter-spacing:.16em;color:#8a877f;text-transform:uppercase">25 game assets · both ways · measured</div>
+    <div style="margin-top:10px;font-size:52px;font-weight:700;letter-spacing:-.035em">Code it or generate it?</div>
+  </div>
+</section>

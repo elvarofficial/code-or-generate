@@ -1,0 +1,18 @@
+{
+  "model": "P2-20260801",
+  "face_limit": 20000,
+  "texture": true,
+  "pbr": true,
+  "model_seed": 42,
+  "inputs": [
+    {
+      "front": "file_3a448a28-9c7f-4989-b4ff-fd818ff93392"
+    },
+    {
+      "left": "file_134e3b58-e18d-4035-a658-b27106ef230f"
+    },
+    {
+      "back": "file_ed36fcec-496b-4596-9a94-270ccf49600e"
+    }
+  ]
+}

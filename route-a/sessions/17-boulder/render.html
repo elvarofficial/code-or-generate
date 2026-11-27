@@ -1,0 +1,34 @@
+<!doctype html><html><body style="margin:0">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { createBoulder } from '/17-boulder/route-a/17-boulder.js';
+const S=1024;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+r.setSize(S,S); r.outputColorSpace=THREE.SRGBColorSpace; r.toneMapping=THREE.NoToneMapping;
+document.body.appendChild(r.domElement);
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0xffffff);
+const g=createBoulder(); scene.add(g);
+let tris=0; g.traverse(o=>{if(o.isMesh){const gg=o.geometry; tris+=(gg.index?gg.index.count:gg.attributes.position.count)/3;}});
+scene.add(new THREE.HemisphereLight(0xffffff,0x4a4a30,0.8));
+const box=new THREE.Box3().setFromObject(g); const c=box.getCenter(new THREE.Vector3()); const sz=box.getSize(new THREE.Vector3());
+const half=sz.y/0.874/2;
+const cam=new THREE.OrthographicCamera(-half,half,half,-half,0.1,100);
+const dl=new THREE.DirectionalLight(0xffffff,2.0); scene.add(dl); scene.add(dl.target);
+const out={tris};
+async function load(src){const i=new Image(); i.src=src; await i.decode(); return i;}
+const views={front:[0,0,1],left:[1,0,0],back:[0,0,-1]};
+for(const [v,d] of Object.entries(views)){
+  cam.position.set(c.x+d[0]*10,c.y,c.z+d[2]*10); cam.lookAt(c); cam.updateMatrixWorld();
+  // light from camera upper-left
+  const right=new THREE.Vector3(1,0,0).applyQuaternion(cam.quaternion);
+  dl.position.copy(c).add(new THREE.Vector3(...d).multiplyScalar(5)).add(right.multiplyScalar(-3)).add(new THREE.Vector3(0,5,0));
+  dl.target.position.copy(c);
+  r.render(scene,cam);
+  const ref=await load('/17-boulder/assets/17-boulder/'+v+'.png');
+  const cv=document.createElement('canvas'); cv.width=2*S; cv.height=S; const x=cv.getContext('2d');
+  x.drawImage(ref,0,0,S,S); x.drawImage(r.domElement,S,0);
+  out[v]=cv.toDataURL('image/png');
+}
+window.__out=out;
+</script></body></html>

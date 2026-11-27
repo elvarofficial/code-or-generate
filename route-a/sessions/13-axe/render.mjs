@@ -1,0 +1,14 @@
+import http from 'http'; import fs from 'fs'; import path from 'path';
+import { chromium } from 'playwright';
+const ROOT='D:/elvar/cog-runs', S=process.argv[2], tag=process.argv[3]||'r';
+const types={'.js':'text/javascript','.html':'text/html','.png':'image/png'};
+const srv=http.createServer((q,res)=>{ let u=decodeURIComponent(q.url.split('?')[0]); const p=u==='/page.html'?path.join(S,'page.html'):path.join(ROOT,u); fs.readFile(p,(e,d)=>{ if(e){res.writeHead(404);res.end();return;} res.writeHead(200,{'Content-Type':types[path.extname(p)]||'application/octet-stream'}); res.end(d);});});
+await new Promise(r=>srv.listen(0,r));
+const b=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+const pg=await b.newPage(); pg.on('console',m=>console.log('console:',m.text())); pg.on('pageerror',e=>console.log('err:',e.message));
+await pg.goto(`http://localhost:${srv.address().port}/page.html`);
+await pg.waitForFunction(()=>window.__out,null,{timeout:60000});
+const out=await pg.evaluate(()=>window.__out);
+console.log('triangles',out.tris);
+for(const n of ['front','left','back']) fs.writeFileSync(path.join(S,`${tag}-${n}.png`),Buffer.from(out[n].split(',')[1],'base64'));
+await b.close(); srv.close();

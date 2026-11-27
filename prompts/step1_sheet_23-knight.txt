@@ -1,0 +1,8 @@
+A game asset turnaround sheet on a plain white background.
+Asset: a knight in full plate armor on a rearing armored warhorse, holding a long lance with a banner, a kite shield on his left arm, the horse wearing a decorated cloth caparison, all on an ornate round base, a collectible statue.
+Style: stylized fantasy, hand-painted, soft even lighting, no shadows on the background.
+Show exactly three views in one row, same size, same height, orthographic, no perspective:
+1. front view, the horse's head points straight at the camera;
+2. left side view, a pure profile, the horse's head points to the left edge of the image;
+3. back view, seen straight from behind, the horse's tail toward the camera.
+Nothing else in the image. No text.

@@ -1,0 +1,10 @@
+.env
+.env.*
+node_modules/
+*.log
+dist/
+clips/frames-*/
+.vercel/
+renders/
+__pycache__/
+*.pyc

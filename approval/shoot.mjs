@@ -1,0 +1,11 @@
+import { chromium } from "playwright";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1600, height: 1000 }, deviceScaleFactor: 1 });
+await p.goto(pathToFileURL(path.resolve("approval/tier5.html")).href);
+await p.waitForLoadState("networkidle");
+await p.evaluate(() => document.fonts.ready);
+await p.screenshot({ path: "approval/tier5-board.png", fullPage: true });
+await p.screenshot({ path: "approval/tier5-board.jpg", fullPage: true, type: "jpeg", quality: 90 });
+await b.close();

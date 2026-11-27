@@ -1,0 +1,26 @@
+<!doctype html><html><body style="margin:0;background:#fff">
+<script type="importmap">{"imports":{"three":"/cog/node_modules/three/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const { createChest } = await import('/cog/07-chest/route-a/07-chest.js?' + Date.now());
+const S = 1024, PX = 500;
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(S, S); renderer.setPixelRatio(1);
+renderer.setClearColor(0xffffff, 1);
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const chest = createChest(); scene.add(chest);
+let tris = 0; chest.traverse(o => { if (o.isMesh) { const g = o.geometry; tris += (g.index ? g.index.count : g.attributes.position.count) / 3; } });
+scene.add(new THREE.HemisphereLight(0xffffff, 0x666666, 1.6));
+const cam = new THREE.OrthographicCamera(-512/PX, 512/PX, 830/PX, (830-1024)/PX, 0.1, 100);
+const views = { front: [0,0,10], left: [10,0,0], back: [0,0,-10] };
+window.shots = {};
+for (const [k, p] of Object.entries(views)) {
+  const dl = new THREE.DirectionalLight(0xffffff, 1.4); dl.position.set(p[0]+ (k==='left'?0:3), 6, p[2] + (k==='left'?3:0)); scene.add(dl);
+  cam.position.set(p[0], 0, p[2]); cam.lookAt(0, 0, 0);
+  renderer.render(scene, cam);
+  window.shots[k] = renderer.domElement.toDataURL('image/png');
+  scene.remove(dl);
+}
+window.tris = tris; window.done = true;
+</script></body></html>

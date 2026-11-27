@@ -1,0 +1,10 @@
+import { chromium } from 'file:///D:/elvar/cog-runs/node_modules/playwright/index.mjs';
+import { serve } from 'file:///D:/elvar/cog-runs/server.mjs';
+import fs from 'fs';
+const S=process.argv[2]; fs.copyFileSync(S+'/page.html','D:/elvar/cog-runs/05-wolf-walk/_page.html');
+const srv=await serve(8772); const b=await chromium.launch(); const p=await b.newPage();
+await p.goto('http://localhost:8772/05-wolf-walk/_page.html?m=/05-wolf-walk/route-a/05-wolf.js'); await p.waitForFunction('window.ready');
+console.log(await p.evaluate(()=>{ const w=wolf; w.userData.play('walk'); for(let i=0;i<40;i++)w.userData.update(1/30);
+ const out=[]; for(let f=0;f<6;f++){ w.userData.update(0.07); w.updateMatrixWorld(true);
+  const row=[]; for(let i=0;i<4;i++){ const pg=w.getObjectByName('paw'+i); const v=pg.getWorldPosition(pg.position.clone().set(0,0,0)); const box=new pg.position.constructor(); row.push(v.y.toFixed(3)+'/'+(pg.rotation.x+pg.parent.rotation.x+pg.parent.parent.rotation.x).toFixed(2)); } out.push(row.join('  ')); } return out.join('\n'); }));
+await b.close(); srv.close(); fs.unlinkSync('D:/elvar/cog-runs/05-wolf-walk/_page.html');

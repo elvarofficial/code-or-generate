@@ -1,0 +1,5 @@
+A game asset turnaround sheet on a plain white background.
+Asset: a battle axe with a double blade and a wrapped wooden handle, standing upright with the head up.
+Style: stylized fantasy, hand-painted, soft even lighting, no shadows on the background.
+Show exactly three views in one row, same size, same height: front view, left side view, back view.
+Nothing else in the image. No text.

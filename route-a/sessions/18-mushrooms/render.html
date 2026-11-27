@@ -1,0 +1,32 @@
+<!doctype html><html><body style="margin:0">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import make from '/18-mushrooms/route-a/18-mushrooms.js';
+const S=512;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+r.setSize(S,S); r.setClearColor(0xffffff); r.outputColorSpace=THREE.SRGBColorSpace;
+const scene=new THREE.Scene();
+const obj=make(); scene.add(obj);
+scene.add(new THREE.HemisphereLight(0xffffff,0x667788,2.2));
+const d=new THREE.DirectionalLight(0xffffff,2.6); d.position.set(3,10,8); scene.add(d);
+const d2=new THREE.DirectionalLight(0xffffff,1.0); d2.position.set(-3,6,-8); scene.add(d2);
+let tris=0; obj.traverse(o=>{if(o.isMesh){const g=o.geometry; tris+=(g.index?g.index.count:g.attributes.position.count)/3;}});
+const cam=new THREE.OrthographicCamera(-5.12,5.12,5.12,-5.12,0.1,100);
+const views={front:[0,0,30],left:[30,0,0],back:[0,0,-30]};
+const out={tris};
+const comp=document.createElement('canvas'); comp.width=S*2; comp.height=S*3; const cx=comp.getContext('2d');
+let row=0;
+for(const [v,p] of Object.entries(views)){
+  cam.position.set(p[0],4.48,p[2]); cam.lookAt(0,4.48,0); cam.updateProjectionMatrix();
+  d2.position.set(-p[0]*0.3-3,6,-p[2]*0.3); 
+  r.render(scene,cam);
+  const url=r.domElement.toDataURL('image/png'); out[v]=url;
+  const im=new Image(); im.src='/18-mushrooms/assets/18-mushrooms/'+v+'.png'; await im.decode();
+  const im2=new Image(); im2.src=url; await im2.decode();
+  cx.drawImage(im,0,row*S,S,S); cx.drawImage(im2,S,row*S,S,S);
+  cx.strokeStyle='#f0f'; for(const y of [S-32, S-32-0.4*S*0+0]){} row++;
+}
+out.comp=comp.toDataURL('image/png');
+window.__out=out;
+</script></body></html>

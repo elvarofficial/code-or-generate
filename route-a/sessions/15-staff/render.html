@@ -1,0 +1,26 @@
+<html><body><script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { createStaff } from '/15-staff/route-a/15-staff.js';
+const obj = createStaff();
+let tris = 0; obj.traverse(o => { if (o.isMesh) { const g = o.geometry; tris += (g.index ? g.index.count : g.attributes.position.count) / 3; } });
+const S = 512, r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+r.setSize(S, S); r.setClearColor(0xffffff); r.outputColorSpace = THREE.SRGBColorSpace;
+const scene = new THREE.Scene(); scene.add(obj);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x887766, 1.6));
+const d = new THREE.DirectionalLight(0xffffff, 1.6); scene.add(d);
+const W = 1024 / 500, cy = (960 - 512) / 500;
+const cam = new THREE.OrthographicCamera(-W/2, W/2, cy + W/2, cy - W/2, 0.01, 20);
+const views = { front: [0, 0, 5], left: [5, 0, 0], back: [0, 0, -5] };
+const out = { tris };
+for (const [v, p] of Object.entries(views)) {
+  cam.position.set(p[0], 0, p[2]); cam.lookAt(0, 0, 0);
+  d.position.set(p[0] + 2, 4, p[2] + 2);
+  r.render(scene, cam);
+  const img = new Image(); img.src = '/15-staff/assets/15-staff/' + v + '.png'; await img.decode();
+  const c = document.createElement('canvas'); c.width = 2 * S; c.height = S; const x = c.getContext('2d');
+  x.drawImage(img, 0, 0, S, S); x.drawImage(r.domElement, S, 0);
+  out[v] = c.toDataURL('image/png');
+}
+window.__out = out;
+</script></body></html>

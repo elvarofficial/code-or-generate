@@ -1,0 +1,11 @@
+const fs=require('fs');const F='D:/elvar/cog-runs/12-shield/route-a/12-shield.js';let s=fs.readFileSync(F,'utf8');
+const rep=(a,b)=>{if(!s.includes(a))throw new Error('miss '+a);s=s.replace(a,b)};
+rep('const yTop = 0.175, yBot = -0.205;','const yTop = 0.19, yBot = -0.22;');
+rep('pts.push(new THREE.Vector3(x0 + bend, y, -WOOD_HALF - 0.005 - lift));','pts.push(new THREE.Vector3(x0 + bend, y, -WOOD_HALF - 0.0075 - lift));');
+rep('rv.position.set(x0, y + (y > 0 ? 0.012 : -0.012), -WOOD_HALF - 0.017);','rv.position.set(x0, y + (y > 0 ? -0.016 : 0.016), -WOOD_HALF - 0.0135);');
+rep('(t - 0.08) / 0.84','(t - 0.14) / 0.72');
+rep('color: 0x8b9096, roughness: 0.42, metalness: 0.35','color: 0xa3a8ae, roughness: 0.38, metalness: 0.3');
+rep('blob(ctx, head, BLUE, 18, 3);','blob(ctx, head, BLUE, 9, 3);');
+rep('[722, 685], [682, 735], [625, 772], [565, 800], [524, 826], [484, 800], [424, 772],\n    [370, 735], [330, 685],','[730, 690], [695, 742], [640, 780], [570, 808], [522, 830], [474, 808], [404, 780],\n    [350, 742], [316, 690],');
+rep('const browL = [[380, 345], [430, 330], [480, 335], [500, 360], [470, 372], [430, 368], [395, 380]];','const browL = [[370, 350], [420, 325], [482, 330], [505, 362], [478, 378], [430, 372], [390, 392], [362, 380]];');
+fs.writeFileSync(F,s);console.log('ok');

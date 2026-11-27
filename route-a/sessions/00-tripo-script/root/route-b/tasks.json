@@ -1,0 +1,516 @@
+[
+  {
+    "asset": "01-crate",
+    "attempt": 1,
+    "model_seed": 42,
+    "task_id": "task-4",
+    "status": "success",
+    "request": {
+      "inputs": [
+        {
+          "front": "tok1_front.png"
+        },
+        {
+          "left": "tok2_left.png"
+        },
+        {
+          "back": "tok3_back.png"
+        }
+      ],
+      "model": "P2-20260801",
+      "face_limit": 20000,
+      "texture": true,
+      "pbr": true,
+      "model_seed": 42
+    },
+    "started_at": "2026-11-24T10:02:32.164Z",
+    "ended_at": "2026-11-24T10:02:32.232Z",
+    "seconds_waited": 0.1,
+    "output_file": "01-crate.glb",
+    "result": {
+      "code": 0,
+      "data": {
+        "task_id": "task-4",
+        "type": "multiview_to_model",
+        "created_at": "2026-11-24T10:02:32.229Z",
+        "status": "success",
+        "progress": 100,
+        "credits_consumed": 40.5,
+        "output": {
+          "model_url": "http://127.0.0.1:49583/dl/task-4.glb"
+        },
+        "completed_at": "2026-11-24T10:02:32.229Z"
+      }
+    }
+  },
+  {
+    "asset": "02-lantern",
+    "attempt": 1,
+    "model_seed": 42,
+    "task_id": "task-8",
+    "status": "failed",
+    "request": {
+      "inputs": [
+        {
+          "front": "tok5_front.png"
+        },
+        {
+          "left": "tok6_left.png"
+        },
+        {
+          "back": "tok7_back.png"
+        }
+      ],
+      "model": "P2-20260801",
+      "face_limit": 20000,
+      "texture": true,
+      "pbr": true,
+      "model_seed": 42
+    },
+    "started_at": "2026-11-24T10:02:32.241Z",
+    "ended_at": "2026-11-24T10:02:32.306Z",
+    "seconds_waited": 0.1,
+    "output_file": null,
+    "result": {
+      "code": 0,
+      "data": {
+        "task_id": "task-8",
+        "type": "multiview_to_model",
+        "created_at": "2026-11-24T10:02:32.306Z",
+        "status": "failed",
+        "progress": 100,
+        "error_code": 1000,
+        "error_message": "mock fail",
+        "credits_consumed": 0
+      }
+    }
+  },
+  {
+    "asset": "02-lantern",
+    "attempt": 2,
+    "model_seed": 43,
+    "task_id": "task-9",
+    "status": "success",
+    "request": {
+      "inputs": [
+        {
+          "front": "tok5_front.png"
+        },
+        {
+          "left": "tok6_left.png"
+        },
+        {
+          "back": "tok7_back.png"
+        }
+      ],
+      "model": "P2-20260801",
+      "face_limit": 20000,
+      "texture": true,
+      "pbr": true,
+      "model_seed": 43
+    },
+    "started_at": "2026-11-24T10:02:32.308Z",
+    "ended_at": "2026-11-24T10:02:32.369Z",
+    "seconds_waited": 0.1,
+    "output_file": "02-lantern.glb",
+    "result": {
+      "code": 0,
+      "data": {
+        "task_id": "task-9",
+        "type": "multiview_to_model",
+        "created_at": "2026-11-24T10:02:32.367Z",
+        "status": "success",
+        "progress": 100,
+        "credits_consumed": 40.5,
+        "output": {
+          "model_url": "http://127.0.0.1:49583/dl/task-9.glb"
+        },
+        "completed_at": "2026-11-24T10:02:32.367Z"
+      }
+    }
+  },
+  {
+    "asset": "03-sword",
+    "attempt": 1,
+    "model_seed": 42,
+    "task_id": "task-13",
+    "status": "failed",
+    "request": {
+      "inputs": [
+        {
+          "front": "tok10_front.png"
+        },
+        {
+          "left": "tok11_left.png"
+        },
+        {
+          "back": "tok12_back.png"
+        }
+      ],
+      "model": "P2-20260801",
+      "face_limit": 20000,
+      "texture": true,
+      "pbr": true,
+      "model_seed": 42
+    },
+    "started_at": "2026-11-24T10:02:32.376Z",
+    "ended_at": "2026-11-24T10:02:32.430Z",
+    "seconds_waited": 0.1,
+    "output_file": null,
+    "result": {
+      "code": 0,
+      "data": {
+        "task_id": "task-13",
+        "type": "multiview_to_model",
+        "created_at": "2026-11-24T10:02:32.429Z",
+        "status": "failed",
+        "progress": 100,
+        "error_code": 1000,
+        "error_message": "mock fail",
+        "credits_consumed": 0
+      }
+    }
+  },
+  {
+    "asset": "03-sword",
+    "attempt": 2,
+    "model_seed": 43,
+    "task_id": "task-14",
+    "status": "failed",
+    "request": {
+      "inputs": [
+        {
+          "front": "tok10_front.png"
+        },
+        {
+          "left": "tok11_left.png"
+        },
+        {
+          "back": "tok12_back.png"
+        }
+      ],
+      "model": "P2-20260801",
+      "face_limit": 20000,
+      "texture": true,
+      "pbr": true,
+      "model_seed": 43
+    },
+    "started_at": "2026-11-24T10:02:32.431Z",
+    "ended_at": "2026-11-24T10:02:32.493Z",
+    "seconds_waited": 0.1,
+    "output_file": null,
+    "result": {
+      "code": 0,
+      "data": {
+        "task_id": "task-14",
+        "type": "multiview_to_model",
+        "created_at": "2026-11-24T10:02:32.493Z",
+        "status": "failed",
+        "progress": 100,
+        "error_code": 1000,
+        "error_message": "mock fail",
+        "credits_consumed": 0
+      }
+    }
+  },
+  {
+    "asset": "03-sword",
+    "attempt": 3,
+    "model_seed": 44,
+    "task_id": "task-15",
+    "status": "failed",
+    "request": {
+      "inputs": [
+        {
+          "front": "tok10_front.png"
+        },
+        {
+          "left": "tok11_left.png"
+        },
+        {
+          "back": "tok12_back.png"
+        }
+      ],
+      "model": "P2-20260801",
+      "face_limit": 20000,
+      "texture": true,
+      "pbr": true,
+      "model_seed": 44
+    },
+    "started_at": "2026-11-24T10:02:32.495Z",
+    "ended_at": "2026-11-24T10:02:32.554Z",
+    "seconds_waited": 0.1,
+    "output_file": null,
+    "result": {
+      "code": 0,
+      "data": {
+        "task_id": "task-15",
+        "type": "multiview_to_model",
+        "created_at": "2026-11-24T10:02:32.554Z",
+        "status": "failed",
+        "progress": 100,
+        "error_code": 1000,
+        "error_message": "mock fail",
+        "credits_consumed": 0
+      }
+    }
+  },
+  {
+    "asset": "04-tree",
+    "attempt": 1,
+    "model_seed": 42,
+    "task_id": "task-19",
+    "status": "success",
+    "request": {
+      "inputs": [
+        {
+          "front": "tok16_front.png"
+        },
+        {
+          "left": "tok17_left.png"
+        },
+        {
+          "back": "tok18_back.png"
+        }
+      ],
+      "model": "P2-20260801",
+      "face_limit": 20000,
+      "texture": true,
+      "pbr": true,
+      "model_seed": 42
+    },
+    "started_at": "2026-11-24T10:02:32.564Z",
+    "ended_at": "2026-11-24T10:02:32.619Z",
+    "seconds_waited": 0.1,
+    "output_file": "04-tree.glb",
+    "result": {
+      "code": 0,
+      "data": {
+        "task_id": "task-19",
+        "type": "multiview_to_model",
+        "created_at": "2026-11-24T10:02:32.617Z",
+        "status": "success",
+        "progress": 100,
+        "credits_consumed": 40.5,
+        "output": {
+          "model_url": "http://127.0.0.1:49583/dl/task-19.glb"
+        },
+        "completed_at": "2026-11-24T10:02:32.617Z"
+      }
+    }
+  },
+  {
+    "asset": "05-wolf",
+    "attempt": 1,
+    "model_seed": 42,
+    "task_id": "task-23",
+    "status": "success",
+    "request": {
+      "inputs": [
+        {
+          "front": "tok20_front.png"
+        },
+        {
+          "left": "tok21_left.png"
+        },
+        {
+          "back": "tok22_back.png"
+        }
+      ],
+      "model": "P2-20260801",
+      "face_limit": 20000,
+      "texture": true,
+      "pbr": true,
+      "model_seed": 42
+    },
+    "started_at": "2026-11-24T10:02:32.625Z",
+    "ended_at": "2026-11-24T10:02:32.681Z",
+    "seconds_waited": 0.1,
+    "output_file": "05-wolf.glb",
+    "result": {
+      "code": 0,
+      "data": {
+        "task_id": "task-23",
+        "type": "multiview_to_model",
+        "created_at": "2026-11-24T10:02:32.679Z",
+        "status": "success",
+        "progress": 100,
+        "credits_consumed": 40.5,
+        "output": {
+          "model_url": "http://127.0.0.1:49583/dl/task-23.glb"
+        },
+        "completed_at": "2026-11-24T10:02:32.679Z"
+      }
+    }
+  },
+  {
+    "asset": "06-golem",
+    "attempt": 1,
+    "model_seed": 42,
+    "task_id": "task-27",
+    "status": "success",
+    "request": {
+      "inputs": [
+        {
+          "front": "tok24_front.png"
+        },
+        {
+          "left": "tok25_left.png"
+        },
+        {
+          "back": "tok26_back.png"
+        }
+      ],
+      "model": "P2-20260801",
+      "face_limit": 20000,
+      "texture": true,
+      "pbr": true,
+      "model_seed": 42
+    },
+    "started_at": "2026-11-24T10:02:32.689Z",
+    "ended_at": "2026-11-24T10:02:32.760Z",
+    "seconds_waited": 0.1,
+    "output_file": "06-golem.glb",
+    "result": {
+      "code": 0,
+      "data": {
+        "task_id": "task-27",
+        "type": "multiview_to_model",
+        "created_at": "2026-11-24T10:02:32.758Z",
+        "status": "success",
+        "progress": 100,
+        "credits_consumed": 40.5,
+        "output": {
+          "model_url": "http://127.0.0.1:49583/dl/task-27.glb"
+        },
+        "completed_at": "2026-11-24T10:02:32.758Z"
+      }
+    }
+  },
+  {
+    "asset": "03-sword",
+    "attempt": 1,
+    "model_seed": 42,
+    "task_id": "task-31",
+    "status": "failed",
+    "request": {
+      "inputs": [
+        {
+          "front": "tok28_front.png"
+        },
+        {
+          "left": "tok29_left.png"
+        },
+        {
+          "back": "tok30_back.png"
+        }
+      ],
+      "model": "P2-20260801",
+      "face_limit": 20000,
+      "texture": true,
+      "pbr": true,
+      "model_seed": 42
+    },
+    "started_at": "2026-11-24T10:02:32.767Z",
+    "ended_at": "2026-11-24T10:02:32.820Z",
+    "seconds_waited": 0.1,
+    "output_file": null,
+    "result": {
+      "code": 0,
+      "data": {
+        "task_id": "task-31",
+        "type": "multiview_to_model",
+        "created_at": "2026-11-24T10:02:32.820Z",
+        "status": "failed",
+        "progress": 100,
+        "error_code": 1000,
+        "error_message": "mock fail",
+        "credits_consumed": 0
+      }
+    }
+  },
+  {
+    "asset": "03-sword",
+    "attempt": 2,
+    "model_seed": 43,
+    "task_id": "task-32",
+    "status": "failed",
+    "request": {
+      "inputs": [
+        {
+          "front": "tok28_front.png"
+        },
+        {
+          "left": "tok29_left.png"
+        },
+        {
+          "back": "tok30_back.png"
+        }
+      ],
+      "model": "P2-20260801",
+      "face_limit": 20000,
+      "texture": true,
+      "pbr": true,
+      "model_seed": 43
+    },
+    "started_at": "2026-11-24T10:02:32.822Z",
+    "ended_at": "2026-11-24T10:02:32.883Z",
+    "seconds_waited": 0.1,
+    "output_file": null,
+    "result": {
+      "code": 0,
+      "data": {
+        "task_id": "task-32",
+        "type": "multiview_to_model",
+        "created_at": "2026-11-24T10:02:32.883Z",
+        "status": "failed",
+        "progress": 100,
+        "error_code": 1000,
+        "error_message": "mock fail",
+        "credits_consumed": 0
+      }
+    }
+  },
+  {
+    "asset": "03-sword",
+    "attempt": 3,
+    "model_seed": 44,
+    "task_id": "task-33",
+    "status": "failed",
+    "request": {
+      "inputs": [
+        {
+          "front": "tok28_front.png"
+        },
+        {
+          "left": "tok29_left.png"
+        },
+        {
+          "back": "tok30_back.png"
+        }
+      ],
+      "model": "P2-20260801",
+      "face_limit": 20000,
+      "texture": true,
+      "pbr": true,
+      "model_seed": 44
+    },
+    "started_at": "2026-11-24T10:02:32.885Z",
+    "ended_at": "2026-11-24T10:02:32.946Z",
+    "seconds_waited": 0.1,
+    "output_file": null,
+    "result": {
+      "code": 0,
+      "data": {
+        "task_id": "task-33",
+        "type": "multiview_to_model",
+        "created_at": "2026-11-24T10:02:32.946Z",
+        "status": "failed",
+        "progress": 100,
+        "error_code": 1000,
+        "error_message": "mock fail",
+        "credits_consumed": 0
+      }
+    }
+  }
+]

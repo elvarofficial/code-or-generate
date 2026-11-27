@@ -1,0 +1,23 @@
+<!doctype html><html><body style="margin:0;background:#fff">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { createDragon } from '/20-dragon-walk/route-a/20-dragon.js';
+const W=360,H=360;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true}); r.setSize(W,H);
+const scene=new THREE.Scene(); scene.background=new THREE.Color('#ffffff');
+scene.add(new THREE.HemisphereLight('#fff','#887766',1.6)); const dl=new THREE.DirectionalLight('#fff',2); dl.position.set(4,10,8); scene.add(dl);
+const grid=new THREE.GridHelper(16,16,'#999','#ccc'); scene.add(grid);
+const d=createDragon(); scene.add(d);
+const cam=new THREE.PerspectiveCamera(30,1,0.1,100);
+const views={front:[0,4,22],left:[22,4,0],back:[0,4,-22],q:[15,9,15],lowleft:[16,1.0,2]};
+window.sheet=(mode,times,vlist)=>{
+  const out=document.createElement('canvas'); out.width=W*times.length; out.height=H*vlist.length; const c=out.getContext('2d');
+  d.userData.play(mode); let t=0;
+  times.forEach((tt,i)=>{ d.userData.update(0); while(t<tt-1e-6){const s=Math.min(1/60,tt-t); d.userData.update(s); t+=s;}
+    vlist.forEach((v,j)=>{ cam.position.set(...views[v]); cam.lookAt(0,3,-0.8); r.render(scene,cam); c.drawImage(r.domElement,i*W,j*H); });
+  });
+  return out.toDataURL('image/png');
+};
+window.ready=true;
+</script></body></html>

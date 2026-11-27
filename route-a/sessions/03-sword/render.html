@@ -1,0 +1,25 @@
+<!doctype html><html><body style="margin:0;background:#fff">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+const { createSword } = await import('/03-sword/route-a/03-sword.js?v=' + Date.now());
+const R = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true});
+R.setSize(1024,1024); R.setPixelRatio(1); R.outputColorSpace = THREE.SRGBColorSpace; R.toneMapping=THREE.ACESFilmicToneMapping; R.toneMappingExposure=0.85;
+document.body.appendChild(R.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xffffff);
+const pm = new THREE.PMREMGenerator(R); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.5;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x555555, 0.6));
+const key = new THREE.DirectionalLight(0xffffff, 1.6); scene.add(key); scene.add(key.target);
+const sword = createSword(); scene.add(sword);
+let tris=0; sword.traverse(o=>{ if(o.isMesh){ const g=o.geometry; tris += (g.index? g.index.count : g.attributes.position.count)/3; }});
+const cam = new THREE.OrthographicCamera(-0.512, 0.512, 0.961, -0.063, 0.01, 10);
+const views = {front:[0,0,3], left:[3,0,0], back:[0,0,-3]};
+const out = {tris};
+for (const [k,p] of Object.entries(views)) {
+  cam.position.set(p[0], 0, p[2]); cam.lookAt(0,0,0); cam.updateMatrixWorld();
+  key.position.copy(cam.position).add(new THREE.Vector3(0,2.5,0)); const side=new THREE.Vector3().crossVectors(cam.position,new THREE.Vector3(0,1,0)).normalize(); key.position.addScaledVector(side,1.2);
+  R.render(scene, cam); out[k] = R.domElement.toDataURL('image/png');
+}
+window.__out = out;
+</script></body></html>
